@@ -4,55 +4,58 @@
 #include <sstream>
 
 #include "world/world.h"
+#include "world/results.h"
 
 using namespace std;
 
 void prompt()
 {
-  cout << "Not enough arguments. \nUsage: ./app x a b c d e (f g h), where: \n"
-      << "x = the mode in which to run the simulation, 1 - binary, 2 - stochastic, 3 - advanced strategies \n"
-      << "a = the initial population \n"
-      << "b, c = the dimensions of the world \n"
-      << "d = the number of epochs the simulation will be run for \n"
-      << "e = the initial ratio of selfish agents in the population \n"
-      << "f = the initial ratio of tit for tat agents (used only for mode 3) \n"
-      << "g = the initial ratio of battery based agents (used only for mode 3) \n"
-      << "h = the initial ratio of hybrid agents (used only for mode 3) \n";
+	cout << "Not enough arguments. \nUsage: ./app x a b c d e (f g h), where: \n"
+	     << "x = the mode in which to run the simulation, 1 - binary, 2 - stochastic, 3 - advanced strategies \n"
+	     << "a = the initial population \n"
+	     << "b, c = the dimensions of the world \n"
+	     << "d = the number of epochs the simulation will be run for \n"
+	     << "e = the number of data points in one run \n"
+	     << "f = the initial ratio of selfish agents in the population \n"
+	     << "g = the initial ratio of tit for tat agents (used only for mode 3) \n"
+	     << "h = the initial ratio of battery based agents (used only for mode 3) \n"
+	     << "i = the initial ratio of hybrid agents (used only for mode 3) \n";
 }
+
 
 int main(int argc, char *argv[])
 {
-  float ratioOfTft = 0;
-  float ratioOfBb = 0;
-  float ratioOfHybrid = 0;
+	float ratioOfTft = 0;
+	float ratioOfBb = 0;
+	float ratioOfHybrid = 0;
 
-  if (argc < 7) //not enough arguments
-  {
-    prompt();
-    return 0;
-  }
+	if (argc < 8) //not enough arguments
+	{
+		prompt();
+		return 0;
+	}
 
-  std::istringstream ss1(argv[1]);
-  int mode;
-  ss1 >> mode;
+	std::istringstream ss1(argv[1]);
+	int mode;
+	ss1 >> mode;
 
-  if (mode == 3)
-  {
-    if (argc < 10)
-    {
-      prompt();
-      return 0;
-    }
-    else
-    {
-      std::istringstream ss7(argv[7]);
-      ss7 >> ratioOfTft;
-      std::istringstream ss8(argv[8]);
-      ss8 >> ratioOfBb;
-      std::istringstream ss9(argv[9]);
-      ss9 >> ratioOfHybrid;
-    }
-  }
+	if (mode == 3)
+	{
+		if (argc < 11)
+		{
+			prompt();
+			return 0;
+		}
+		else
+		{
+			std::istringstream ss8(argv[8]);
+			ss8 >> ratioOfTft;
+			std::istringstream ss9(argv[9]);
+			ss9 >> ratioOfBb;
+			std::istringstream ss10(argv[10]);
+			ss10 >> ratioOfHybrid;
+		}
+	}
 
 
 	std::istringstream ss2(argv[2]);
@@ -68,26 +71,80 @@ int main(int argc, char *argv[])
 	size_t maxEras;
 	ss5 >> maxEras;
 	std::istringstream ss6(argv[6]);
+	size_t dataPoints;
+	ss6 >> dataPoints;
+	std::istringstream ss7(argv[7]);
 	float ratioOfSelfish;
-	ss6 >> ratioOfSelfish;
-
-
+	ss7 >> ratioOfSelfish;
+   	
 	srand(time(0));
-	World world{mode, population, width, height, ratioOfSelfish, ratioOfTft, ratioOfBb, ratioOfHybrid};
-  cout << "----------------------------------------------------------\n";
-  cout << "effect\tepochs\tselfish\tstoch\tTTF\tBB\tHybrid\n";
+	cout << "----------------------------------------------------------\n";
+	cout << "epochs\teffect\teffectSD\tselfish\tselfishSD\tstoch\tTTF\tBB\tHybrid\n";
+
+	Results **results = new Results*[dataPoints];
+	for (int i = 0; i < dataPoints; ++i)
+		results[i] = new Results[maxEras];
+	
+	for (int k = 0; k < dataPoints; ++k)
+	{
+		World world{mode, population, width, height, ratioOfSelfish, ratioOfTft, ratioOfBb, ratioOfHybrid};
+		for (int i = 0; i < maxEras; ++i)
+		{
+			int j = 0;
+			while (world.timeStep())
+			{
+				j++;
+			}
+			// "half the population is dead in epoch " <<
+			world.reportSuccessAndAgents(&results[k][i]);
+			results[k][i].epochs = j;
+			results[k][i].selfishness = world.evolution(mode);
+		}	
+	}
+
+	Results *averageResult = new Results[maxEras];
 	for (int i = 0; i < maxEras; ++i)
 	{
-    // cout << "------------------------------\n";
-		int j = 0;
-		while (world.timeStep())
+		for (int k = 0; k < dataPoints; ++k)
 		{
-			j++;
+			averageResult[i].effectivness += results[k][i].effectivness;
+			averageResult[i].epochs += results[k][i].epochs;
+			averageResult[i].selfishness += results[k][i].selfishness;
+			averageResult[i].numStochastic += results[k][i].numStochastic;
+			averageResult[i].numTFT += results[k][i].numTFT;
+			averageResult[i].numBB += results[k][i].numBB;
+			averageResult[i].numHybrid += results[k][i].numHybrid;
 		}
-    // "half the population is dead in epoch " <<
-    world.report();
-    cout <<  j << "\t";
-
-		world.evolution(mode);
+		averageResult[i].effectivness /= dataPoints;
+		averageResult[i].epochs /= dataPoints;
+		averageResult[i].selfishness /= dataPoints;
+		averageResult[i].numStochastic /= dataPoints;
+		averageResult[i].numTFT /= dataPoints;
+		averageResult[i].numBB /= dataPoints;
+		averageResult[i].numHybrid /= dataPoints;
 	}
+
+	for (int i = 0; i < maxEras; ++i)
+	{
+		for (int k = 0; k < dataPoints; ++k)
+		{
+			double term = (results[k][i].selfishness - averageResult[i].selfishness);
+			averageResult[i].selfishSD += term * term;
+			term = (results[k][i].effectivness - averageResult[i].effectivness);
+			averageResult[i].effectSD += term * term;
+		}
+		averageResult[i].selfishSD /= dataPoints;
+		averageResult[i].effectSD /= dataPoints;
+	}
+	
+	
+	for (int i = 0; i < maxEras; ++i)
+		averageResult[i].print();
+	
+	for (int i = 0; i < dataPoints; ++i)
+		delete[] results[i];
+	delete[] results;
+	delete[] averageResult;
+	
+	return 0;
 }
