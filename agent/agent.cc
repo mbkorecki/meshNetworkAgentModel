@@ -89,11 +89,6 @@ void Agent::move(bool mode, World &world)
 	}
 }
 
-bool Agent::wantsToRoute(int agent)
-{
-	return d_wantsToRoute;
-}
-
 void Agent::setWillingnessToRoute()
 {	
 	if (rand()%100 > (d_selfish * 100))

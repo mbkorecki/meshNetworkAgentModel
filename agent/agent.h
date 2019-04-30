@@ -51,18 +51,13 @@ public:
 	virtual ~Agent(){};
 	Agent& operator=(const Agent&) = default;
 
-	void move(bool mode, World &world);
-	void die(){ d_x = -1; };
-
+	//Getters:
 	int x(){ return d_x; };
 	int y(){ return d_y; };
 	int id(){ return d_id; };
 	int type(){ return d_type; };
 	bool isTableUpdated(){ return d_tableUpdated; };
-	void setSelfish(float set){ d_selfish = set; };
-	void setType(int set){ d_type = set; };
-	void setMemoryAt(int idx, int set){ d_memoryTable[idx] = set; };
-
+	float isSelfish() { return d_selfish; };
 	TableEntry &routeTable(int idx){ return d_routeTable[idx]; };
 	vector<TableEntry> &routeTable(){ return d_routeTable; };
 	int messagesTotal(){ return d_messagesTotal; };
@@ -70,29 +65,33 @@ public:
 	int messagesRouted(){ return d_messagesRouted; };
 	int messagesRecieved(){ return d_messagesRecieved; };
 	int battery(){ return d_battery; };
-
 	float fitness(){ return (float)d_messagesSent / d_messagesTotal; };
 
-	bool isNeighbour(Agent &agent, World &world);
-	float isSelfish() { return d_selfish; };
-	//returns a vector of all agents within range of this agent which are willing to route
-	//the vector stores them in descending order of proximity (furthest first)
-	bool operator() (Agent&, Agent&); //sorting on fitness
-	float  distanceTo(Agent&);
+	virtual bool wantsToRoute(int agent) { return d_wantsToRoute; }; //false if not willing route the message
 
-	void updateRouteTable(vector<shared_ptr<Agent> > &population, World &world);
+	//Setters:
+	void setSelfish(float set){ d_selfish = set; };
+	void setType(int set){ d_type = set; };
+	void setMemoryAt(int idx, int set){ d_memoryTable[idx] = set; };
 	void setTableTo(bool set){ d_tableUpdated = set; };
+
+	virtual void setWillingnessToRoute();
+	
+	//Agents' behavior
+	void move(bool mode, World &world);
+	void die(){ d_x = -1; };
+	
+	bool isNeighbour(Agent &agent, World &world);
+	bool operator() (Agent&, Agent&); //sorting on fitness
+	
+	float distanceTo(Agent&);
+	void updateRouteTable(vector<shared_ptr<Agent> > &population, World &world);
 	void flushRouteTable();
 	bool recieveTable(vector<TableEntry> &table, int senderID, vector<shared_ptr<Agent> > &population);
 	bool advertiseTable(vector<shared_ptr<Agent> > &population, World &world);
-
 	void sendMessage(Agent&, vector<shared_ptr<Agent> > &population);
 	bool routeMessage(Agent&, Agent&, vector<shared_ptr<Agent> > &population);
-
-	virtual bool wantsToRoute(int agent); //false if not willing route the message
-	virtual void setWillingnessToRoute();
 	bool wantsToSend(); //false if not willing to send the message
-
 	bool isWithinRange(Agent&, World &world);
 };
 

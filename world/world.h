@@ -26,31 +26,31 @@ class World
 
 public:
 	World(int mode, size_t popSize, size_t width, size_t height, float ratio1, float ratio2, float ratio3, float ratio4);
-	// World(const World&){};
-	// World(World&&){};
 	~World(){};
 
 	void createMode1(float ratio);
 	void createMode2(float ratio);
 	void createMode3(float ratio1, float ratio2, float ratio3, float ratio4);
-
-	bool timeStep();
-
-	void reportSuccessAndAgents(Results *results);
 	
 	size_t width(){ return d_width; };
 	size_t height(){ return d_height; };
 
+
+	bool timeStep();
 	bool isInView(Agent&);
 	bool otherInView(Agent&);
 
+	//Result reporting:
+	void reportSuccessAndAgents(Results *results);
+	
+	//Evolutionary algorithm:
 	double evolution(int mode);
 	double evoAlg1();
 	double evoAlg2();
 	double evoAlg3();
 	int pickParent(vector<Agent>  &survivors);
 	float reproduce(float parent1, float parent2);
-
+	//Agent fitness comparison used for sorting in the evolutionary algorithm
 	bool operator() (Agent &agent1, Agent &agent2);
 };
 
