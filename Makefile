@@ -13,7 +13,7 @@ $(MAIN): $(OBJS)
 .cc.o:
 	$(CC) $(CCFLAGS) $(INCLUDES) -c $<  -o $@
 
-.PHONY: depend clean all-results
+.PHONY: depend clean all-results clean-results
 
 clean:
 	rm -f $(MAIN) $(OBJS)
@@ -25,24 +25,24 @@ results:
 	mkdir -p results
 
 results/setup1results.txt: app results
-	./app 1  80  50 50  10  100  0.01 > $@
+	./app 1  80  50 50  10  100  0.01  >  $@
 
 results/setup2results.txt: app results
-	./app 2  80  50 50  10  100  0.01 > $@
+	./app 2  80  50 50  10  100  0.01  >  $@
 
-results/setup3BBresults.txt: app results
-	echo "TODO"
+results/setup3setting1TFTresults.txt: app results
+	./app 3  80  50 50  10  100  0.01 0.5 0 0  >  $@
 
-results/setup3FFAresults.txt: app results
-	echo "TODO"
+results/setup3setting2BBresults.txt: app results
+	./app 3  80  50 50  10  100  0.01 0 0.5 0  >  $@
 
-results/setup3HybridResults.txt: app results
-	echo "TODO"
+results/setup3setting3HybridResults.txt: app results
+	./app 3  80  50 50  10  100  0.01 0 0 0.5  >  $@
 
-results/setup3TFTResults.txt: app results
-	echo "TODO"
+results/setup3setting4TournamentResults.txt: app results
+	./app 3  80  50 50  10  100  0.01 0.25 0.25 0.25  >  $@
 
-results/setup3TournamentResults.txt: app results
-	echo "TODO"
+all-results: results/setup1results.txt results/setup2results.txt results/setup3setting1TFTresults.txt  results/setup3setting3HybridResults.txt results/setup3setting2BBresults.txt results/setup3setting4TournamentResults.txt
 
-all-results: results/setup1results.txt results/setup2results.txt results/setup3BBresults.txt results/setup3FFAresults.txt results/setup3HybridResults.txt results/setup3TFTResults.txt results/setup3TournamentResults.txt
+clean-results:
+	rm -rf results

@@ -19,19 +19,19 @@ The following command runs Set-up 1 as described in the article:
 
 In general you can run
 
-    ./app m a b c d e f (g h i)
+    ./app x a b c d e f (g h i)
 
 where
 
-    m = set-up to use: 1 - binary, 2 - stochastic, 3 - advanced strategies
-    a = initial number of agents
-    b c = dimensions of the world
-    d = number of days the simulation will be run for
-    e = the number of data points in one run
-    f = initial ratio of selfish agents in the population
-    g = initial ratio of tit for tat agents (only used in set-up 3)
-    h = initial ratio of battery based agents (only used in set-up 3)
-    i = initial ratio of hybrid agents (only used in set-up 3)
+    x = set-up to use: 1 - binary, 2 - stochastic, 3 - advanced strategies
+    a = number of agents
+    b c = size of the world
+    d = number of days to simulate
+    e = how often the simulation should run
+    f = initial ratio of selfish agents
+    g = initial ratio of tit-for-tat agents   (used only for set-up 3)
+    h = initial ratio of battery-based agents (used only for set-up 3)
+    i = initial ratio of hybrid agents        (used only for set-up 3)
 
 For further examples, see the `Makefile`.
 You can run `make all-results` to run all experiments -- they will take a long time!
