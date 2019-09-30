@@ -137,10 +137,11 @@ int main(int argc, char *argv[])
 	}
 	
 	
-	for (int i = 0; i < maxEras; ++i)
-		cout << i << "\t"; // print the day in the first column
+	for (int i = 0; i < maxEras; ++i) {
+		cout << (i + 1) << "\t"; // print the day in the first column
 		averageResult[i].print();
-	
+	}
+
 	for (int i = 0; i < dataPoints; ++i)
 		delete[] results[i];
 	delete[] results;

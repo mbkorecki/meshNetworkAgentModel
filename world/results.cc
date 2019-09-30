@@ -15,5 +15,5 @@ void Results::print()
 		  << numStochastic << divider
 		  << numTFT        << divider
 		  << numBB         << divider
-		  << numHybrid << " \\\\\n";
+		  << numHybrid << " \n";
 }
