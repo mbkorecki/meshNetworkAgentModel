@@ -43,7 +43,7 @@ protected:
 	int d_battery;
 	bool d_wantsToRoute;
 	vector<int> d_memoryTable;
-	
+
 public:
 	Agent(int id, int x, int y, int populationSize, float selfishness, int type);
 	Agent(const Agent&);
@@ -76,14 +76,14 @@ public:
 	void setTableTo(bool set){ d_tableUpdated = set; };
 
 	virtual void setWillingnessToRoute();
-	
+
 	//Agents' behavior
 	void move(bool mode, World &world);
 	void die(){ d_x = -1; };
-	
+
 	bool isNeighbour(Agent &agent, World &world);
 	bool operator() (Agent&, Agent&); //sorting on fitness
-	
+
 	float distanceTo(Agent&);
 	void updateRouteTable(vector<shared_ptr<Agent> > &population, World &world);
 	void flushRouteTable();

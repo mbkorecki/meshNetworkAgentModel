@@ -90,7 +90,7 @@ void Agent::move(bool mode, World &world)
 }
 
 void Agent::setWillingnessToRoute()
-{	
+{
 	if (rand()%100 > (d_selfish * 100))
 		d_wantsToRoute = true;
 	else
@@ -183,7 +183,7 @@ bool Agent::recieveTable(vector<TableEntry> &table, int senderID, vector<shared_
 	int idx = 0;
 	bool improved = false;
 	// if (!population[senderID].get()->wantsToRoute(this->id()))
-	// { 
+	// {
 	// 	if (d_type != 0)
 	// 	{
 	// 		d_memoryTable[senderID] = 0;
@@ -275,5 +275,5 @@ bool Agent::routeMessage(Agent &reciever, Agent &sender, vector<shared_ptr<Agent
 		return true;
 	}
 	return false;
-	
+
 }

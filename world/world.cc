@@ -72,7 +72,7 @@ void World::createMode3(float ratioOfSelfish, float ratioOfTft, float ratioOfBb,
 	d_population.reserve(d_popSize);
 
 	float ratioOfStochastic = 1 - ratioOfTft  - ratioOfBb - ratioOfHybrid;
-	
+
 	float totalSelfishness = 0;
 	float selfishness;
 
@@ -210,7 +210,7 @@ void World::reportSuccessAndAgents(Results *results)
 	double type1 = 0;
 	double type2 = 0;
 	double type3 = 0;
-	
+
 	float averageSuccess = 0;
 	for (auto &agent : d_population)
 	{
@@ -219,7 +219,7 @@ void World::reportSuccessAndAgents(Results *results)
 		msgSum += agent.get()->messagesTotal();
 		msgRtd += agent.get()->messagesRouted();
 		msgRec += agent.get()->messagesRecieved();
-		
+
 		switch (agent.get()->type())
 		{
 		case 0:

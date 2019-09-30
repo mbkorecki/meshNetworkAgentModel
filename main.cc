@@ -76,14 +76,14 @@ int main(int argc, char *argv[])
 	std::istringstream ss7(argv[7]);
 	float ratioOfSelfish;
 	ss7 >> ratioOfSelfish;
-   	
+
 	srand(time(0));
 	cout << "day\truns\teffect\teffectSD\tselfish\tselfishSD\tstoch\tTTF\tBB\tHybrid\n";
 
 	Results **results = new Results*[dataPoints];
 	for (int i = 0; i < dataPoints; ++i)
 		results[i] = new Results[maxEras];
-	
+
 	for (int k = 0; k < dataPoints; ++k)
 	{
 		World world{mode, population, width, height, ratioOfSelfish, ratioOfTft, ratioOfBb, ratioOfHybrid};
@@ -98,7 +98,7 @@ int main(int argc, char *argv[])
 			world.reportSuccessAndAgents(&results[k][i]);
 			results[k][i].epochs = j;
 			results[k][i].selfishness = world.evolution(mode);
-		}	
+		}
 	}
 
 	Results *averageResult = new Results[maxEras];
@@ -135,8 +135,8 @@ int main(int argc, char *argv[])
 		averageResult[i].selfishSD /= dataPoints;
 		averageResult[i].effectSD /= dataPoints;
 	}
-	
-	
+
+
 	for (int i = 0; i < maxEras; ++i) {
 		cout << (i + 1) << "\t"; // print the day in the first column
 		averageResult[i].print();
@@ -146,6 +146,6 @@ int main(int argc, char *argv[])
 		delete[] results[i];
 	delete[] results;
 	delete[] averageResult;
-	
+
 	return 0;
 }
