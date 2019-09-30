@@ -4,15 +4,16 @@
 
 void Results::print()
 {
+	const std::string divider = "\t";
 	std::cout << std::fixed;
 	std::cout << std::setprecision(3);
-	std::cout << epochs << "\t"
-	          << effectivness << "\t"
-	          << effectSD << "\t\t"
-	          << selfishness << "\t"
-	          << selfishSD << "\t\t"
-	          << numStochastic << "\t"
-	          << numTFT << "\t"
-	          << numBB << "\t"
-	          << numHybrid << "\n";
+	std::cout << epochs        << divider
+		  << effectivness  << divider
+		  << effectSD      << divider
+		  << selfishness   << divider
+		  << selfishSD     << divider
+		  << numStochastic << divider
+		  << numTFT        << divider
+		  << numBB         << divider
+		  << numHybrid << " \\\\\n";
 }

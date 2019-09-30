@@ -78,8 +78,7 @@ int main(int argc, char *argv[])
 	ss7 >> ratioOfSelfish;
    	
 	srand(time(0));
-	cout << "----------------------------------------------------------\n";
-	cout << "epochs\teffect\teffectSD\tselfish\tselfishSD\tstoch\tTTF\tBB\tHybrid\n";
+	cout << "day\truns\teffect\teffectSD\tselfish\tselfishSD\tstoch\tTTF\tBB\tHybrid\n";
 
 	Results **results = new Results*[dataPoints];
 	for (int i = 0; i < dataPoints; ++i)
@@ -139,6 +138,7 @@ int main(int argc, char *argv[])
 	
 	
 	for (int i = 0; i < maxEras; ++i)
+		cout << i << "\t"; // print the day in the first column
 		averageResult[i].print();
 	
 	for (int i = 0; i < dataPoints; ++i)
