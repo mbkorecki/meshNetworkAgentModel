@@ -8,13 +8,13 @@
 
 The following command runs Set-up 1 as described in the article:
 
-	./app 1  80  50 50  10  100  0.01
-	       \   \   \ \    \    \     \
-	        \   \   \ \    \    \     start with 1% selfish agents
-		     \   \   \ \    \    run each simulation 100 times
-		      \   \   \ \    simulate ten days
-		       \   \   use a 50x50 sized grid
-		  		\   use a population of 80 agents
+    ./app 1  80  50 50  10  100  0.01
+           \   \   \ \    \    \     \
+            \   \   \ \    \    \     start with 1% selfish agents
+             \   \   \ \    \    run each simulation 100 times
+              \   \   \ \    simulate ten days
+               \   \   use a 50x50 sized grid
+                \   \   use a population of 80 agents
                  use set-up 1
 
 In general you can run
