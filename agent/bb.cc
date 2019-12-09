@@ -7,4 +7,3 @@ void Bb::setWillingnessToRoute()
 	else
 		d_wantsToRoute = true;
 };
-

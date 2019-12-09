@@ -15,4 +15,3 @@ void Hybrid::setWillingnessToRoute()
 	else
 		d_wantsToRoute = true;
 };
-

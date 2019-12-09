@@ -1,6 +1,7 @@
 #ifndef RESULTS_H
 #define RESULTS_H
 
+#include <string>
 
 struct Results
 {

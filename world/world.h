@@ -31,7 +31,7 @@ public:
 	void createMode1(float ratio);
 	void createMode2(float ratio);
 	void createMode3(float ratio1, float ratio2, float ratio3, float ratio4);
-	
+
 	size_t width(){ return d_width; };
 	size_t height(){ return d_height; };
 
@@ -42,7 +42,7 @@ public:
 
 	//Result reporting:
 	void reportSuccessAndAgents(Results *results);
-	
+
 	//Evolutionary algorithm:
 	double evolution(int mode);
 	double evoAlg1();

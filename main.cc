@@ -10,16 +10,16 @@ using namespace std;
 
 void prompt()
 {
-	cout << "Not enough arguments. \nUsage: ./app x a b c d e (f g h), where: \n"
-	     << "x = the mode in which to run the simulation, 1 - binary, 2 - stochastic, 3 - advanced strategies \n"
-	     << "a = the initial population \n"
-	     << "b, c = the dimensions of the world \n"
-	     << "d = the number of epochs the simulation will be run for \n"
-	     << "e = the number of data points in one run \n"
-	     << "f = the initial ratio of selfish agents in the population \n"
-	     << "g = the initial ratio of tit for tat agents (used only for mode 3) \n"
-	     << "h = the initial ratio of battery based agents (used only for mode 3) \n"
-	     << "i = the initial ratio of hybrid agents (used only for mode 3) \n";
+	cout << "Not enough arguments. \n\nUsage: ./app x a b c d e f (g h i)\n  where\n"
+	     << "    x = set-up to use: 1 - binary, 2 - stochastic, 3 - advanced strategies\n"
+	     << "    a = number of agents\n"
+	     << "    b c = size of the world\n"
+	     << "    d = number of days to simulate\n"
+	     << "    e = how often the simulation should run\n"
+	     << "    f = initial ratio of selfish agents\n"
+	     << "    g = initial ratio of tit-for-tat agents   (used only for set-up 3)\n"
+	     << "    h = initial ratio of battery-based agents (used only for set-up 3)\n"
+	     << "    i = initial ratio of hybrid agents        (used only for set-up 3)\n\n";
 }
 
 
@@ -76,15 +76,14 @@ int main(int argc, char *argv[])
 	std::istringstream ss7(argv[7]);
 	float ratioOfSelfish;
 	ss7 >> ratioOfSelfish;
-   	
+
 	srand(time(0));
-	cout << "----------------------------------------------------------\n";
-	cout << "epochs\teffect\teffectSD\tselfish\tselfishSD\tstoch\tTTF\tBB\tHybrid\n";
+	cout << "day\truns\teffect\teffectSD\tselfish\tselfishSD\tstoch\tTTF\tBB\tHybrid\n";
 
 	Results **results = new Results*[dataPoints];
 	for (int i = 0; i < dataPoints; ++i)
 		results[i] = new Results[maxEras];
-	
+
 	for (int k = 0; k < dataPoints; ++k)
 	{
 		World world{mode, population, width, height, ratioOfSelfish, ratioOfTft, ratioOfBb, ratioOfHybrid};
@@ -99,7 +98,7 @@ int main(int argc, char *argv[])
 			world.reportSuccessAndAgents(&results[k][i]);
 			results[k][i].epochs = j;
 			results[k][i].selfishness = world.evolution(mode);
-		}	
+		}
 	}
 
 	Results *averageResult = new Results[maxEras];
@@ -136,15 +135,17 @@ int main(int argc, char *argv[])
 		averageResult[i].selfishSD /= dataPoints;
 		averageResult[i].effectSD /= dataPoints;
 	}
-	
-	
-	for (int i = 0; i < maxEras; ++i)
+
+
+	for (int i = 0; i < maxEras; ++i) {
+		cout << (i + 1) << "\t"; // print the day in the first column
 		averageResult[i].print();
-	
+	}
+
 	for (int i = 0; i < dataPoints; ++i)
 		delete[] results[i];
 	delete[] results;
 	delete[] averageResult;
-	
+
 	return 0;
 }
