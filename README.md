@@ -14,7 +14,7 @@ The following command runs Set-up 1 as described in the article:
              \   \   \ \    \    run each simulation 100 times
               \   \   \ \    simulate ten days
                \   \   use a 50x50 sized grid
-                \   \   use a population of 80 agents
+                \   use a population of 80 agents
                  use set-up 1
 
 In general you can run

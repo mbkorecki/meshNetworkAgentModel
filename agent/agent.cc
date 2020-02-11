@@ -182,53 +182,26 @@ bool Agent::recieveTable(vector<TableEntry> &table, int senderID, vector<shared_
 {
 	int idx = 0;
 	bool improved = false;
-	// if (!population[senderID].get()->wantsToRoute(this->id()))
-	// {
-	// 	if (d_type != 0)
-	// 	{
-	// 		d_memoryTable[senderID] = 0;
-	// 	}
-	// 	if (d_routeTable[senderID].hopCount >= (table[senderID].hopCount + 1))
-	// 	{
-	// 		if (d_routeTable[senderID].hopCount == (table[senderID].hopCount + 1))
-	// 		{
-	// 			if ((rand()%population.size()) > 0.7 * population.size())
-	// 			{
-	// 				d_routeTable[senderID].nextHop = senderID;
-	// 				d_routeTable[senderID].hopCount = (table[senderID].hopCount + 1);
-	// 			}
-	// 		}
-	// 		else
-	// 		{
-	// 			improved = true;
-	// 			d_routeTable[senderID].nextHop = senderID;
-	// 			d_routeTable[senderID].hopCount = (table[senderID].hopCount + 1);
-	// 		}
-	// 	}
-	// }
-	//else
+	for (TableEntry &entry : table)
 	{
-		for (TableEntry &entry : table)
+		if (d_routeTable[idx].hopCount >= (entry.hopCount + 1))
 		{
-			if (d_routeTable[idx].hopCount >= (entry.hopCount + 1))
+			if (d_routeTable[idx].hopCount == (entry.hopCount + 1))
 			{
-				if (d_routeTable[idx].hopCount == (entry.hopCount + 1))
+				if ((rand()%population.size()) > 0.7 * population.size())
 				{
-					if ((rand()%population.size()) > 0.7 * population.size())
-					{
-						d_routeTable[idx].nextHop = senderID;
-						d_routeTable[idx].hopCount = (entry.hopCount + 1);
-					}
-				}
-				else
-				{
-					improved = true;
 					d_routeTable[idx].nextHop = senderID;
-					d_routeTable[idx].hopCount = entry.hopCount + 1;
+					d_routeTable[idx].hopCount = (entry.hopCount + 1);
 				}
 			}
-			++idx;
+			else
+			{
+				improved = true;
+				d_routeTable[idx].nextHop = senderID;
+				d_routeTable[idx].hopCount = entry.hopCount + 1;
+			}
 		}
+		++idx;
 	}
 	return improved;
 }
@@ -243,10 +216,6 @@ void Agent::sendMessage(Agent &reciever, vector<shared_ptr<Agent> > &population)
 		if (population[nextHop].get()->routeMessage(reciever, *this, population))
 			++d_messagesSent;
 	}
-	// else
-	// {
-		// cout << "FAILURE!!!: sendMessage failed due to the reciever being out of range\n";
-	// }
 }
 
 bool Agent::routeMessage(Agent &reciever, Agent &sender, vector<shared_ptr<Agent> > &population)
